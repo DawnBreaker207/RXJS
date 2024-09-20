@@ -14,27 +14,27 @@
           <div class="recipe-grid-item-top">
             <div>
               <i class="pi pi-tag recipe-category-icon"></i>
-              <span class="recipe-category">{{ recipe.category }}</span>
+              <span class="recipe-category">{{ recipe?.category || 'Nothing' }}</span>
             </div>
           </div>
           <div class="recipe-grid-item-content">
             <img
               class="recipe-image"
-              [src]="'assets/recipes/' + recipe.imageUrl"
-              [alt]="recipe.title"
+              [src]="'assets/recipes/' + recipe?.imageUrl"
+              [alt]="recipe?.title"
             />
             <div class="recipe-name">{{ recipe?.title }}</div>
             <div class="recipe-description">{{ recipe?.title }}</div>
             <p-rating
               class="recipe-rating"
-              [ngModel]="recipe.rating"
+              [ngModel]="recipe?.rating"
               [readonly]="true"
               [cancel]="false"
             >
             </p-rating>
           </div>
           <div class="recipe-grid-item-bottom">
-            <span class="recipe-prep-time">{{ recipe?.prepTime }}min</span>
+            <span class="recipe-prep-time">{{ recipe?.prepTime }} min</span>
             <p-button class="recipe-favourite" icon="pi pi-heart"></p-button>
           </div>
         </div>

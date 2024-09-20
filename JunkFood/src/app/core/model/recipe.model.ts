@@ -9,4 +9,5 @@ export interface Recipe {
   yield?: number;
   steps?: string;
   rating?: number;
+  category?: string;
 }
