@@ -1,19 +1,26 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Recipe } from '../model/recipe.model';
-import { catchError, of } from 'rxjs';
-
+import { environment } from '../../../environments/environment';
 const BASE_PATH = environment.basePath;
-console.log(BASE_PATH);
 
 @Injectable({
   providedIn: 'root',
 })
 export class RecipesService {
-  recipes$ = this.http
-    .get<Recipe[]>(`${BASE_PATH}/recipes`)
-    .pipe(catchError((error) => of([])));
+  recipes$ = this.http.get<Recipe[]>(`${BASE_PATH}/recipes`);
+
+  private filterRecipeSubject = new BehaviorSubject<Recipe>({ title: '' });
+  filterRecipesAction$ = this.filterRecipeSubject.asObservable();
 
   constructor(private http: HttpClient) {}
+
+  updateFilter(criteria: Recipe) {
+    this.filterRecipeSubject.next(criteria);
+  }
+
+  saveRecipe(formValue: Recipe): Observable<Recipe> {
+    return this.http.post<Recipe>(`${BASE_PATH}/recipes/save`, formValue);
+  }
 }
