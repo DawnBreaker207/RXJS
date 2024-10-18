@@ -111,23 +111,79 @@ const stringSlug = [
 //   console.log(transfer);
 // });
 
-const observable$ = new Observable<number>((subscribe) => {
-  let counter = 1;
+// Unsubscribe
+// const observable$ = new Observable<number>((subscribe) => {
+//   let counter = 1;
 
-  const intervalId = setInterval(() => {
-    console.log(`Emitted`, counter);
-    subscribe.next(counter++);
-  }, 1000);
+//   const intervalId = setInterval(() => {
+//     console.log(`Emitted`, counter);
+//     subscribe.next(counter++);
+//   }, 1000);
+//   return () => {
+//     clearInterval(intervalId);
+//   };
+// });
+
+// const subscription = observable$.subscribe((index) => {
+//   console.log(index);
+// });
+
+// setTimeout(() => {
+//   console.log('Unsubscribe');
+//   subscription.unsubscribe();
+// }, 7000);
+
+//Subscribe
+
+// const observable$ = new Observable<string>((subscribe) => {
+//   console.log('Hello World');
+
+//   subscribe.next('Hello');
+//   subscribe.next('Alice');
+// });
+
+// observable$.subscribe((index) => {
+//   console.log(index);
+// });
+
+// Complete
+// const observable$ = new Observable<string>((subscribe) => {
+//   console.log('Hello World');
+
+//   subscribe.next('Alice');
+//   setTimeout(() => {
+//     subscribe.next('Hello');
+//     subscribe.complete();
+//   }, 2000);
+//   return () => {
+//     console.log('Teardown');
+//   };
+// });
+
+// observable$.subscribe({
+//   next: (value) => console.log(value),
+//   complete: () => console.log('Complete'),
+// });
+// console.log('After subscribe');
+
+// Error
+const observable$ = new Observable<string>((subscribe) => {
+  console.log('Hello World');
+
+  subscribe.next('Alice');
+  setTimeout(() => {
+    subscribe.next('Hello');
+    // subscribe.complete();
+  }, 2000);
+  setTimeout(() => subscribe.error(new Error('Failure')), 4000);
   return () => {
-    clearInterval(intervalId);
+    console.log('Teardown');
   };
 });
 
-const subscription = observable$.subscribe((index) => {
-  console.log(index);
+observable$.subscribe({
+  next: (value) => console.log(value),
+  error: (err) => console.log(err.message),
+  complete: () => console.log('Complete'),
 });
-
-setTimeout(() => {
-  console.log('Unsubscribe');
-  subscription.unsubscribe();
-}, 7000);
+console.log('After subscribe');
